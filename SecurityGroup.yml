@@ -1,0 +1,30 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: SecurityGroup
+
+Resources: 
+  CloudFormationVPCSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: VPC SecurityGroup
+      GroupDescription: VPC SecurityGroup
+      VpcId: !ImportValue "VPCID"
+      SecurityGroupIngress:
+        -        
+            FromPort: 22
+            IpProtocol: tcp
+            ToPort: 22
+            CidrIp: 0.0.0.0/0
+        -
+            FromPort: 80
+            IpProtocol: tcp
+            ToPort: 80
+            CidrIp: 0.0.0.0/0
+        -
+            FromPort: 443
+            IpProtocol: tcp
+            ToPort: 443
+            CidrIp: 0.0.0.0/0            
+
+      Tags:
+        - Key: Name
+          Value: CloudformationSecurity

@@ -1,0 +1,117 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: VPC & Subnet Create
+
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      - Label:
+          default: "NetworkConfigure"
+        Parameters:
+          - VPCCIDR
+          - PublicSubnetA
+          - PublicSubnetC
+          - PrivateSubnetA
+          - PrivateSubnetC
+    
+    ParameterLabels:
+      VPCCIDR:
+        default: "input VPCCIDR"
+      PublicSubnetA:
+        default: "input PublicSubnetACIDR"
+      PublicSubnetC:
+        default: "input PublicSubnetCCIDR"
+      PrivateSubnetA:
+        default: "input PrivateSubnetACIDR"
+      PrivateSubnetC:
+        default: "input PrivateSubnetCCIDR"
+
+Parameters:
+  VPCCIDR:
+    Type: String
+    Default: "10.0.0.0/16"
+
+  PublicSubnetA:
+    Type: String
+    Default: "10.0.0.0/24"
+
+  PublicSubnetC:
+    Type: String
+    Default: "10.0.2.0/24"
+
+  PrivateSubnetA:
+    Type: String
+    Default: "10.0.1.0/24"
+
+  PrivateSubnetC:
+    Type: String
+    Default: "10.0.3.0/24"
+
+Resources: 
+  VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: !Ref VPCCIDR
+      EnableDnsSupport: true
+      Tags:
+        - Key: Name
+          Value: Original
+  
+  PublicA:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: "ap-northeast-1a"
+      VpcId: !Ref VPC
+      CidrBlock: !Ref PublicSubnetA
+      Tags:
+        - Key: Name
+          Value: PublicSubnetA
+
+  PublicC:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: "ap-northeast-1c"
+      VpcId: !Ref VPC
+      CidrBlock: !Ref PublicSubnetC
+      Tags:
+        - Key: Name
+          Value: PublicSubnetC
+
+  PrivateA:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: "ap-northeast-1a"
+      VpcId: !Ref VPC
+      CidrBlock: !Ref PrivateSubnetA
+      Tags:
+        - Key: Name
+          Value: PrivateSubnetA
+
+  PrivateC:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: "ap-northeast-1c"
+      VpcId: !Ref VPC
+      CidrBlock: !Ref PrivateSubnetC
+      Tags:
+        - Key: Name
+          Value: PrivateSubnetC
+
+  IGW:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: Cloudformation IGW
+  AttachGateway:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref VPC
+      InternetGatewayId: !Ref IGW
+
+Outputs:
+  VPC:
+    Description: VPCID
+    Value: !Ref VPC
+    Export: 
+      Name: "VPCID"
+
