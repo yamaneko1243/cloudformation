@@ -108,28 +108,28 @@ Resources:
       VpcId: !Ref VPC
       InternetGatewayId: !Ref IGW
    
-   #routetableをVPCに関連づける
-   RouteTable:
-     Type: AWS::EC2::RouteTable
-     Properties:
-       VpcId: !Ref vpC
-       Tags:
-         - Key: Name
-           Value: routetable
-   Route:
-     Type: AWS::EC2::Route
-     Properties:
-       RouteTableId: !Ref Routetable
-       GatewayId: !Ref IGW
+  #routetableをVPCに関連づける
+  RouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: cloudformationroutetable
+  Route:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref RouteTable
+      GatewayId: !Ref IGW
     
-    subnetallocate:
-      Type: AWS::EC2::SubnetRouteTableAssociation
-      Properties:
-        SubnetId: !Ref PublicA
-        SubnetId: !Ref PublicC
-        SubnetId: !Ref PrivateA
-        SubnetId: !Ref PrivateC
-        RouteTableId: !Ref RouteTable
+  subnetallocate:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicA
+      SubnetId: !Ref PublicC
+      SubnetId: !Ref PrivateA
+      SubnetId: !Ref PrivateC
+      RouteTableId: !Ref RouteTable
 
 Outputs:
   VPC:
