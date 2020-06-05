@@ -120,14 +120,30 @@ Resources:
     Type: AWS::EC2::Route
     Properties:
       RouteTableId: !Ref RouteTable
+      DestinationCidrBlock: 0.0.0.0/0
       GatewayId: !Ref IGW
     
-  subnetallocate:
+  PublicsubnetAallocate:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
       SubnetId: !Ref PublicA
+      RouteTableId: !Ref RouteTable
+
+  PublicsubnetCallocate:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
       SubnetId: !Ref PublicC
+      RouteTableId: !Ref RouteTable
+
+  PrivateAallocate:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
       SubnetId: !Ref PrivateA
+      RouteTableId: !Ref RouteTable
+
+  PrivateCallocate:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
       SubnetId: !Ref PrivateC
       RouteTableId: !Ref RouteTable
 
