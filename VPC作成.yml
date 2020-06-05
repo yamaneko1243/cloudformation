@@ -125,10 +125,10 @@ Resources:
     subnetallocate:
       Type: AWS::EC2::SubnetRouteTableAssociation
       Properties:
-        SubnetId: PublicA
-        SubnetId: PublicC
-        SubnetId: PrivateA
-        SubnetId: PrivateC
+        SubnetId: !Ref PublicA
+        SubnetId: !Ref PublicC
+        SubnetId: !Ref PrivateA
+        SubnetId: !Ref PrivateC
         RouteTableId: !Ref RouteTable
 
 Outputs:
